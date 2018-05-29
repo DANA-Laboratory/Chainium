@@ -100,7 +100,7 @@ module ProcessingTests =
             |> Map.ofList
 
         // PREPARE TX
-        let nonce = Nonce 11L
+        let nonce = Nonce 21L
         let fee = ChxAmount 1M
         let amountToTransfer = ChxAmount 10M
 
@@ -115,7 +115,7 @@ module ProcessingTests =
                         }
                 } :> obj
             ]
-            |> Helpers.newTx senderWallet.PrivateKey nonce fee
+            |> Helpers.newTx recipientWallet.PrivateKey nonce fee
 
         let txSet = [txHash]
 
@@ -150,8 +150,8 @@ module ProcessingTests =
 
         test <@ output.TxResults.Count = 1 @>
         test <@ output.TxResults.[txHash] = Success @>
-        test <@ output.ChxBalances.[senderWallet.Address].Nonce = nonce @>
-        test <@ output.ChxBalances.[recipientWallet.Address].Nonce = initialChxState.[recipientWallet.Address].Nonce @>
+        test <@ output.ChxBalances.[recipientWallet.Address].Nonce = nonce @>
+        test <@ output.ChxBalances.[senderWallet.Address].Nonce = initialChxState.[recipientWallet.Address].Nonce @>
         test <@ output.ChxBalances.[validatorWallet.Address].Nonce = initialChxState.[validatorWallet.Address].Nonce @>
         test <@ output.ChxBalances.[senderWallet.Address].Amount = senderChxBalance @>
         test <@ output.ChxBalances.[recipientWallet.Address].Amount = recipientChxBalance @>
